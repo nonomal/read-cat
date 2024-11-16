@@ -4,7 +4,7 @@ import { RawAxiosResponseHeaders, AxiosResponseHeaders } from 'axios';
 export type Params = Record<string, number | string | boolean>;
 export type Charset = 'UTF8' | 'GBK';
 export type RequestMethod = 'GET' | 'POST';
-export type ResponseType = 'arraybuffer' | 'text';
+export type ResponseType = 'arraybuffer' | 'text' | 'json';
 export type Protocol = 'http' | 'https' | 'socks4' | 'socks5';
 export type RequestProxy = {
   host: string,
@@ -20,6 +20,9 @@ export type RequestConfig = {
   urlencode?: Charset,
   charset?: Charset,
   responseType?: ResponseType
+  maxRedirects?: number,
+  signal?: AbortSignal,
+  timeout?: number
 }
 
 export type Response<T> = {

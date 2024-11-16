@@ -2,11 +2,13 @@
 import { ElLink } from 'element-plus';
 import { description } from '../../../../../package.json';
 import { useLog } from './hooks/log';
+import { useUpdateStore } from '../../../../store/update';
 
 const { version, branch, commit, date } = METADATA;
 const { chrome, electron, node, v8 } = process.versions;
 
 const { exportLog } = useLog();
+const { update, getUpdateLog } = useUpdateStore();
 
 </script>
 <script lang="ts">
@@ -24,47 +26,49 @@ export default {
     </header>
     <main>
       <table>
-        <tr>
-          <td>版本</td>
-          <td class="version">
-            <span>{{ `${version}${branch === 'dev' ? '.' + date : ''}` }}</span>
-            <div>
-              <ElLink type="primary" :underline="false">检查更新</ElLink>
-              <ElLink type="primary" :underline="false">更新日志</ElLink>
-              <ElLink type="primary" :underline="false" @click="exportLog">导出日志</ElLink>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>作者</td>
-          <td>Moomew</td>
-        </tr>
-        <tr>
-          <td>官网</td>
-          <td>
-            <ElLink href="https://read-cat.top" target="_blank">https://read-cat.top</ElLink>
-          </td>
-        </tr>
-        <tr>
-          <td>提交</td>
-          <td>{{ commit }}</td>
-        </tr>
-        <tr>
-          <td>Chrome</td>
-          <td>{{ chrome }}</td>
-        </tr>
-        <tr>
-          <td>Electron</td>
-          <td>{{ electron }}</td>
-        </tr>
-        <tr>
-          <td>Node.js</td>
-          <td>{{ node }}</td>
-        </tr>
-        <tr>
-          <td>V8</td>
-          <td>{{ v8 }}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>版本</td>
+            <td class="version">
+              <span>{{ `${version}${branch === 'dev' ? '.' + date : ''}` }}</span>
+              <div>
+                <ElLink type="primary" :underline="false" @click="update(true)">检查更新</ElLink>
+                <ElLink type="primary" :underline="false" @click="getUpdateLog">更新日志</ElLink>
+                <ElLink type="primary" :underline="false" @click="exportLog">导出日志</ElLink>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>作者</td>
+            <td>Moomew</td>
+          </tr>
+          <tr>
+            <td>官网</td>
+            <td>
+              <ElLink href="https://read-cat.top" target="_blank">https://read-cat.top</ElLink>
+            </td>
+          </tr>
+          <tr>
+            <td>提交</td>
+            <td>{{ commit }}</td>
+          </tr>
+          <tr>
+            <td>Chrome</td>
+            <td>{{ chrome }}</td>
+          </tr>
+          <tr>
+            <td>Electron</td>
+            <td>{{ electron }}</td>
+          </tr>
+          <tr>
+            <td>Node.js</td>
+            <td>{{ node }}</td>
+          </tr>
+          <tr>
+            <td>V8</td>
+            <td>{{ v8 }}</td>
+          </tr>
+        </tbody>
       </table>
     </main>
   </div>
@@ -114,10 +118,12 @@ export default {
         &>span {
           user-select: text;
         }
+
         &>div {
           display: flex;
           align-items: center;
         }
+
         :deep(.el-link) {
           color: var(--rc-theme-color);
           transition: scale 0.3s ease;
@@ -147,6 +153,14 @@ export default {
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .settings-help {
+    main {
+      width: 80%;
     }
   }
 }
